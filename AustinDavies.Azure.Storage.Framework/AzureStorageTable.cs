@@ -28,11 +28,13 @@ namespace AustinDavies.Azure.Storage.Framework
 						.Where(query), new TableContinuationToken())).ToList();
 		}
 
-		public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+		public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         {
-			return _storageTable.CreateQuery<TEntity>().AsQueryable().Where(predicate);
+			var query = _storageTable.CreateQuery<TEntity>()
+				.AsQueryable()
+				.Where(predicate) as TableQuery<TEntity>;
+			return await ExecuteQuerySegmented(query, cancellationToken);
         }
-
 
 		public Task<TableResult> DeleteEntryAsync(ITableEntity entity, CancellationToken cancellationToken = default)
 		{
@@ -51,6 +53,24 @@ namespace AustinDavies.Azure.Storage.Framework
 		public Task ExecuteBatchAsync(AzureBatchOperationOption option, ITableEntity tableEntity, CancellationToken cancellationToken = default)
 		{
 			return ExecuteBatchListAsync(option, new List<ITableEntity> { tableEntity }, cancellationToken);
+		}
+
+		private async Task<IEnumerable<TEntity>> ExecuteQuerySegmented(TableQuery<TEntity> query, CancellationToken cancellationToken = default)
+		{
+			{
+				var items = new List<TEntity>();
+				TableContinuationToken token = null;
+
+				do
+				{
+					var seg = await _storageTable.ExecuteQuerySegmentedAsync<TEntity>(query, token);
+					token = seg.ContinuationToken;
+					items.AddRange(seg);
+
+				} while (token != null && !cancellationToken.IsCancellationRequested);
+
+				return items;
+			}
 		}
 	}
 }

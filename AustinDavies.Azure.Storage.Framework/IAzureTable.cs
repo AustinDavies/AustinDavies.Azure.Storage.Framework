@@ -12,7 +12,7 @@ namespace AustinDavies.Azure.Storage.Framework
     public interface IAzureTable<TEntity> where TEntity : class, ITableEntity, new()
 	{
 		Task<List<TEntity>> QueryAsync(string query, CancellationToken cancellationToken = default);
-		IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+		Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 		Task<TableResult> DeleteEntryAsync(ITableEntity entity, CancellationToken cancellationToken = default);
 		Task ExecuteBatchListAsync(AzureBatchOperationOption option, List<ITableEntity> tableEntities, CancellationToken cancellationToken = default);
 		Task ExecuteBatchAsync(AzureBatchOperationOption option, ITableEntity tableEntity, CancellationToken cancellationToken = default);
