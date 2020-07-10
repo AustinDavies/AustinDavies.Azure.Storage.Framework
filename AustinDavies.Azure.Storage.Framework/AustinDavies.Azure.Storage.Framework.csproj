@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>AustinDavies.Azure.Storage.Framework</AssemblyName>
+    <Authors>Austin Davies</Authors>
+    <Description>Eases management of Storage Tables dependencies and abstracts out the complexity of performing CRUD operations on Azure Storage Tables</Description>
+    <PackageTags>Azure, Storage</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Product>AustinDavies.Azure.Storage.Framework</Product>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageId>AustinDavies.Azure.Storage.Framework</PackageId>
+    <RepositoryUrl>https://github.com/AustinDavies/AustinDavies.Azure.Storage.Framework</RepositoryUrl>
+    <RepositoryType></RepositoryType>
+    <PackageProjectUrl>https://github.com/AustinDavies/AustinDavies.Azure.Storage.Framework</PackageProjectUrl>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.7" />
+  </ItemGroup>
+
+</Project>
