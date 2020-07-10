@@ -1,8 +1,10 @@
 ﻿using AustinDavies.Azure.Storage.Framework.Enums;
 using AustinDavies.Azure.Storage.Framework.Util;
 using Microsoft.Azure.Cosmos.Table;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +27,12 @@ namespace AustinDavies.Azure.Storage.Framework
 					new TableQuery<TEntity>()
 						.Where(query), new TableContinuationToken())).ToList();
 		}
+
+		public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+			return _storageTable.CreateQuery<TEntity>().AsQueryable().Where(predicate);
+        }
+
 
 		public Task<TableResult> DeleteEntryAsync(ITableEntity entity, CancellationToken cancellationToken = default)
 		{
